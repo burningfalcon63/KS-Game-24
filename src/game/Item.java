@@ -21,6 +21,15 @@ public class Item {
 		return desc;
 	}
 	
+	public void open() {
+		Game.print("You can't open that!");
+	}
+	
+	public void use() {
+		Game.print("You can't use that!");
+	}
+	
+	@Override
 	public String toString() {
 		return name + ", " + desc	;
 	}

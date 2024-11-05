@@ -4,7 +4,11 @@ public class World {
     // Returns the room the player starts in.
     public static Room buildWorld() {
 
+    	Safe mirror = new Safe("mirror", "a dark mirror with that shows no reflection");
+    	Item combination = new Item("combination", "it seems like it could be useful");
         Room grandFountain = new Room("You are next to the Grand Fountain, it's the biggest you've seen.");
+        grandFountain.addItem(mirror);
+        grandFountain.addItem(combination);
         
         Item seed = new Item("Miracle Seed", "it has a strange warmth to it.");
         Room greenHouse = new Room("You are at the Greenhouse, plants from all over grow here.");
