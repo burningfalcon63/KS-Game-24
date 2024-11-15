@@ -10,10 +10,13 @@ public class Room {
     private Room south;
     private Room up;
     private Room down;
+    private Boolean locked = false;
+    private String name;
     private HashMap<String, Item>items = new HashMap<String, Item>();
 
-    public Room(String desc){
-        description = desc;
+    public Room(String name, String desc){
+        this.description = desc;
+        this.name = name;
     }
 
 	public Room getExit(char x){
@@ -93,6 +96,22 @@ public class Room {
         }
         return roomDescription.toString();
     }
+
+	public Boolean isLocked() {
+		return locked;
+	}
+
+	public void setLocked(Boolean locked) {
+		this.locked = locked;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
 }
 
 

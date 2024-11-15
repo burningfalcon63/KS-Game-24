@@ -21,6 +21,10 @@ public class Item {
 		return desc;
 	}
 	
+	public void setDesc(String desc) {
+		this.desc = desc;
+	}
+	
 	public void open() {
 		Game.print("You can't open that!");
 	}

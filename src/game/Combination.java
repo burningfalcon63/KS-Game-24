@@ -5,6 +5,7 @@ public class Combination extends Item{
 		super(n, d);
 	}
 
+	@Override
 	public void use() {
 		Game.print("If you find a mirror try moving through it!");
 	}
