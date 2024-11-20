@@ -2,6 +2,7 @@ package game;
 
 public class Crown extends Item {
 
+	private static final long serialVersionUID = 1L;
 	public Crown(String n, String d) {
 		super(n, d);
 	}

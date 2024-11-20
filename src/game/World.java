@@ -1,91 +1,101 @@
 package game;
-public class World {
-    // Builds the game world.
-    // Returns the room the player starts in.
-    public static Room buildWorld() {
 
-    	Safe mirror = new Safe("mirror", "a dark mirror with that shows no reflection");
-    	Item combination = new Combination("combination", "it seems like it could be useful");
-        Room grandFountain = new Room("Grand Fountain", "You are next to the Grand Fountain, it's the biggest you've seen.");
+public class World {
+	
+	private static Room createRoom(String name, String description) {
+	    Room room = new Room(name);
+	    Game.rooms.put(name, description);
+	    //addRoomToFile("rooms.txt", name, description);
+	    return room;
+	}
+	
+	private static void connectRooms(Room from, char direction, Room to) {
+	    from.addExit(to, direction);
+	    // Optionally, add a reverse connection
+	    if (direction == 'n') to.addExit(from, 's');
+	    if (direction == 's') to.addExit(from, 'n');
+	    if (direction == 'e') to.addExit(from, 'w');
+	    if (direction == 'w') to.addExit(from, 'e');
+	    if (direction == 'u') to.addExit(from, 'd');
+	    if (direction == 'd') to.addExit(from, 'u');
+	}
+	
+	public static Room buildWorld() {
+
+    	Safe mirror = new Safe("Mirror", "a dark mirror with that shows no reflection");
+    	Item combination = new Combination("Combination", "it seems like it could be useful");
+        Room grandFountain = createRoom("Grand Fountain", "You are next to the Grand Fountain, it's the biggest you've seen.");
         grandFountain.addItem(mirror);
         grandFountain.addItem(combination);
         
         Item seed = new Item("Miracle Seed", "it has a strange warmth to it.");
-        Room greenHouse = new Room("Green House", "You are at the Greenhouse, plants from all over grow here.");
-        grandFountain.addItem(seed);
+        Room greenHouse = createRoom("Green House", "You are at the Greenhouse, plants from all over grow here.");
+        greenHouse.addItem(seed);
         
         Item rose = new Item("Crystal Rose", "it sparkles in the light.");
-        Room roseGarden = new Room("Rose Garden", "You are in the Rose Garden, the roses smell nice.");
-        grandFountain.addItem(rose);
-        Room flowerFields = new Room("Flower Fields", "You are in the Flower Fields, the fields go off into the distance."); 
-        Room parkingLot = new Room("Parking Lot", "You are in the Parking lot, your mom dropped you off here.");
+        Room roseGarden = createRoom("Rose Garden", "You are in the Rose Garden, the roses smell nice.");
+        Room flowerFields = createRoom("Flower Fields", "You are in the Flower Fields, the fields go off into the distance."); 
+        Room parkingLot = createRoom("Parking Lot", "You are in the Parking lot, your mom dropped you off here.");
+        roseGarden.addItem(rose);
 
+        Room wishingWell = createRoom("Wishing Well", "You are at the Wishing Well, maybe wishes can come true.");
         Item coin = new Item("Gold Coin", "the fairy Queen is printed on it.");
-        Item scepter = new Item("Fairy Scepter", "it looks like it could be important");
-        Item well = new Safe("Wishing Well", "maybe you should throw a coin in");
-        Room wishingWell = new Room("Wishing Well", "You are at the Wishing Well, maybe wishes can come true.");
+        Item well = new Well("Wishing Well", "maybe you should throw a coin in");
         grandFountain.addItem(coin);
-        grandFountain.addItem(scepter);
         wishingWell.addItem(well);
 
+        Room fairyShrine = createRoom("Fairy Shrine", "You are at the Fairy Shrine, the statue of the Fairy King glows faintly.");
         Item crown = new Item("Fairy Crown", "it looks like it's fallen into disrepair.");
-        Room fairyShrine = new Room("Fairy Shrine", "You are at the Fairy Shrine, the statue of the Fairy King glows faintly.");
-        grandFountain.addItem(crown);
+        fairyShrine.addItem(crown);
         
-        Room observatoryM = new Room("Observatory", "You are in the Observatory, the stars look beautiful here."); 
-        Room observatoryB = new Room("Observatory Bathroom", "You are in the Observatory Bathroom, it smells like flowers.");
+        Room observatoryM = createRoom("Observatory", "You are in the Observatory, the stars look beautiful here."); 
+        Room observatoryB = createRoom("Observatory Bathroom", "You are in the Observatory Bathroom, it smells like flowers.");
 
+        Room repairRoomM = createRoom("Repair Room", "You are in the Repair Room, the fountain is maintained here."); 
+        Room repairRoomC = createRoom("Repair Closet", "You are in the Repair Room Closet, there are many tools here."); 
+        Room repairRoomB = createRoom("Repair Bathroom", "You are in the Repair Room Bathroom, it smells pretty bad here."); 
         Item wrench = new Item("Magic Wrench", "it's warm to the touch, maybe it can fix something.");
         Item pipe = new Item("Broken Pipe", "it looks like this pipe pumps something very important");
-        Room repairRoomM = new Room("Repair Room", "You are in the Repair Room, the fountain is maintained here."); 
-        Room repairRoomC = new Room("Repair Closet", "You are in the Repair Room Closet, there are many tools here."); 
-        Room repairRoomB = new Room("Repair Bathroom", "You are in the Repair Room Bathroom, it smells pretty bad here."); 
-        grandFountain.addItem(wrench);
-        grandFountain.addItem(pipe);
+        repairRoomC.addItem(wrench);
+        repairRoomM.addItem(pipe);
         
-        Item glasses = new Crown("Rose Tinted Glasses", "The world looks  different now");
-        Room ruinedGarden = new Room("Ruined Garden", "You are in a Ruined Garden it looks like it was once very beautiful here");
+        Room ruinedGarden = createRoom("Ruined Garden", "You are in a Ruined Garden it looks like it was once very beautiful here");
         Item stone = new Key("Shiny Stone", "i feel like this fits somewhere", ruinedGarden);
+        Item glasses = new Crown("Rose Tinted Glasses", "The world looks  different now");
         ruinedGarden.setLocked(true);
-        grandFountain.addItem(glasses);
+        ruinedGarden.addItem(glasses);
         grandFountain.addItem(stone);
 
-        grandFountain.addExit(roseGarden, 's'); //Grand Fountain
-        grandFountain.addExit(wishingWell, 'w');
-        grandFountain.addExit(greenHouse, 'e');
-        grandFountain.addExit(fairyShrine, 'n');
-        grandFountain.addExit(observatoryM, 'u');	
-        grandFountain.addExit(repairRoomM, 'd');
-     
+        connectRooms(grandFountain, 's', roseGarden); // Grand Fountain
+        connectRooms(grandFountain, 'w', wishingWell);
+        connectRooms(grandFountain, 'e', greenHouse);
+        connectRooms(grandFountain, 'n', fairyShrine);
+        connectRooms(grandFountain, 'u', observatoryM);
+        connectRooms(grandFountain, 'd', repairRoomM);
 
-        roseGarden.addExit(grandFountain, 'n'); //Rose Garden(exit)
-        roseGarden.addExit(flowerFields, 'e');
-        
-        flowerFields.addExit(roseGarden, 'w');
-        roseGarden.addExit(parkingLot, 'w');
-        parkingLot.addExit(roseGarden, 'e');
-        
-        wishingWell.addExit(grandFountain, 'e');
-       //Wishing Well
+        connectRooms(roseGarden, 'e', flowerFields); // Rose Garden
+        connectRooms(roseGarden, 'w', parkingLot);
 
-        greenHouse.addExit(grandFountain, 'w'); //GreenHouse
-        
+        connectRooms(flowerFields, 'w', roseGarden);
 
-        fairyShrine.addExit(grandFountain, 's'); //Fairy Shrine
-        fairyShrine.addExit(ruinedGarden, 'u');
-        
-        ruinedGarden.addExit(fairyShrine, 'd');
-        
-        observatoryM.addExit(grandFountain, 'd'); //Observatory
-        observatoryM.addExit(observatoryB, 'e'); //Observatory bathroom
-        observatoryB.addExit(observatoryM, 'w'); //Observatory 
-        
-        repairRoomM.addExit(grandFountain, 'u'); //repairroom
-        repairRoomM.addExit(repairRoomC, 'e'); //repairroom closet
-        repairRoomC.addExit(repairRoomM, 'w'); 
-        
-        repairRoomM.addExit(repairRoomB, 'w'); //repairroom bathroom
-        repairRoomB.addExit(repairRoomM, 'e');
+        connectRooms(wishingWell, 'e', grandFountain); // Wishing Well
+
+        connectRooms(greenHouse, 'w', grandFountain); // Green House
+
+        connectRooms(fairyShrine, 's', grandFountain); // Fairy Shrine
+        connectRooms(fairyShrine, 'u', ruinedGarden);
+
+        connectRooms(ruinedGarden, 'd', fairyShrine);
+
+        connectRooms(observatoryM, 'd', grandFountain); // Observatory
+        connectRooms(observatoryM, 'e', observatoryB);
+        connectRooms(observatoryB, 'w', observatoryM);
+
+        connectRooms(repairRoomM, 'u', grandFountain); // Repair Room
+        connectRooms(repairRoomM, 'e', repairRoomC);
+        connectRooms(repairRoomC, 'w', repairRoomM);
+        connectRooms(repairRoomM, 'w', repairRoomB);
+        connectRooms(repairRoomB, 'e', repairRoomM);
         
         return grandFountain;
     }

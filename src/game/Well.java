@@ -2,6 +2,8 @@ package game;
 
 public class Well extends Item{
 
+	private static final long serialVersionUID = 1L;
+
 	public Well(String n, String d) {
 		super(n, d);
 	}

@@ -1,7 +1,8 @@
 package game;
 
 public class Key extends Item {
-    private Room lockRoom;
+    private static final long serialVersionUID = 1L;
+	private Room lockRoom;
     
     public Key(String name, String description, Room lockRoom) {
         super(name, description);

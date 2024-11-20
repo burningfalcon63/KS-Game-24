@@ -1,6 +1,14 @@
 package game;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Game {
@@ -8,17 +16,19 @@ public class Game {
 	 private static Room currentRoom;
 	 private static Scanner scanner = new Scanner(System.in);
 	 private static ArrayList<Item> inventory = new ArrayList<>();
+	 public static HashMap <String, String> rooms = new HashMap<>();
      
     public static void main(String[] args) {
     	currentRoom = World.buildWorld();
         String command = " ";
         
         do {
-        		print(currentRoom);
+        		Game.print(currentRoom);
 
         		// Get user input for direction (e.g., 'n' for north)
         		print("\nEnter a direction (n)orth, (s)outh, (e)ast, (w)est, (u)p, or (d)own, or 'q' to quit: ");
-        		print("\nNEW: say 'take' to grab an item, 'look' to examine an item, or 'inv' to check your inventory");
+        		print("Say 'take' to grab an item, 'look' to examine an item, or 'inv' to check your inventory");
+        		print("Say 'use' to use an item, 'open' to open an item");
         		command = scanner.nextLine().trim().toLowerCase();
         		String[] words = command.split(" ");
         		Room nextRoom = null;
@@ -157,6 +167,13 @@ public class Game {
                 	    }
                 	    break;
                 	    
+                	case "save":
+                			Game.saveGame("new game");
+                		break;
+                		
+                	case "load":
+                			Game.loadGame("new game");
+                		break;
                 	case "q":
                 		print("Thank you for playing, goodbye!");
                 		break;
@@ -206,5 +223,46 @@ public class Game {
             }
         }
         return null;  // Return null if item is not found in inventory
+    }
+    
+    public static void saveGame(String save) {
+		File f = new File(save);
+		try {
+			FileOutputStream fos = new FileOutputStream(f);
+			ObjectOutputStream stream = new ObjectOutputStream(fos);
+			stream.writeObject(currentRoom);
+			stream.writeObject(inventory);
+			stream.writeObject(rooms);
+			stream.close();
+		}
+		catch (FileNotFoundException e) {
+			System.out.println("File " + save + "not found");
+			System.exit(0);
+		}
+		catch (IOException ex) {
+			System.out.println("Bummer man");
+		}
+	}
+    @SuppressWarnings("unchecked")
+	public static void loadGame(String fileName) {
+    	File f = new File(fileName);
+    	try {
+    		FileInputStream fos = new FileInputStream(f);
+    		ObjectInputStream stream = new ObjectInputStream(fos);
+    		currentRoom = (Room) stream.readObject();
+    		inventory =  (ArrayList<Item>) stream.readObject();
+    		rooms = (HashMap<String, String>) stream.readObject();
+    		stream.close();
+    	} 
+    	catch (FileNotFoundException e) {
+    		System.out.println("File "+fileName+" not found.");
+    		System.exit(0);
+    	} 
+    	catch (IOException ex) {
+    		System.out.println("Bummers, man.");
+    	} 
+    	catch (ClassNotFoundException ex) {
+    		System.out.println("Something went horribly wrong.");
+    	}
     }
 }

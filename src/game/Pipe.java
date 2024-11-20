@@ -2,6 +2,7 @@ package game;
 
 public class Pipe extends Item{
 
+	private static final long serialVersionUID = 1L;
 	public Pipe(String n, String d) {
 		super(n, d);
 	}
@@ -13,7 +14,7 @@ public class Pipe extends Item{
 			Game.print("It sounds like the fountain's water is running now!");
 		}
 		else {
-			Game.print("You dont have the right items.");
+			Game.print("Maybe you can fix the pipe with a wrench.");
 		}
 	}
 

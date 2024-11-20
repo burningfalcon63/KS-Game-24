@@ -1,10 +1,14 @@
 package game;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class Room {
-    private String description;
-    private Room east;
+public class Room implements Serializable {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Room east;
     private Room west;
     private Room north;
     private Room south;
@@ -14,31 +18,25 @@ public class Room {
     private String name;
     private HashMap<String, Item>items = new HashMap<String, Item>();
 
-    public Room(String name, String desc){
-        this.description = desc;
+    public Room(String name) {
         this.name = name;
     }
 
-	public Room getExit(char x){
-        if (x == 'e')
-            return east;
-        
-        else if (x == 'w')
-            return west;
-        
-        else if (x == 'n')
-            return north;
-        
-        else if (x == 's')
-            return south;
-        
-        else if (x == 'u')
-            return up;
-        
-        else if (x == 'd')
-            return down;
-        
-        return null;
+    public Room getExit(char x) {
+        Room nextRoom = null;
+        switch (x) {
+            case 'e': nextRoom = east; break;
+            case 'w': nextRoom = west; break;
+            case 'n': nextRoom = north; break;
+            case 's': nextRoom = south; break;
+            case 'u': nextRoom = up; break;
+            case 'd': nextRoom = down; break;
+        }
+        if (nextRoom != null && nextRoom.isLocked()) {
+            System.out.println("The room is locked.");
+            return null; // Prevent access
+        }
+        return nextRoom;
     }
 
     public void addExit(Room room, char direction){
@@ -85,8 +83,9 @@ public class Room {
 	}
 
 
-    public String toString(){
-    	StringBuilder roomDescription = new StringBuilder(description + "\nItems in this room:");
+	@Override
+    public String toString() {
+        StringBuilder roomDescription = new StringBuilder(getDesc() + "\nItems in this room:");
         if (items.isEmpty()) {
             roomDescription.append(" None.");
         } else {
@@ -96,6 +95,7 @@ public class Room {
         }
         return roomDescription.toString();
     }
+
 
 	public Boolean isLocked() {
 		return locked;
@@ -112,6 +112,12 @@ public class Room {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public String getDesc() {
+        // Fetch description from Game's HashMap
+        String description = Game.rooms.get(name);
+        return description != null ? description : "No description available.";
+    }
 }
 
 
