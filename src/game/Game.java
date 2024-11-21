@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class Game {
 	
 	 private static Room currentRoom;
-	 private static Scanner scanner = new Scanner(System.in);
+	 public static Scanner scanner = new Scanner(System.in);
 	 private static ArrayList<Item> inventory = new ArrayList<>();
 	 public static HashMap <String, String> rooms = new HashMap<>();
      
@@ -29,6 +29,7 @@ public class Game {
         		print("\nEnter a direction (n)orth, (s)outh, (e)ast, (w)est, (u)p, or (d)own, or 'q' to quit: ");
         		print("Say 'take' to grab an item, 'look' to examine an item, or 'inv' to check your inventory");
         		print("Say 'use' to use an item, 'open' to open an item");
+        		
         		command = scanner.nextLine().trim().toLowerCase();
         		String[] words = command.split(" ");
         		Room nextRoom = null;
@@ -163,6 +164,20 @@ public class Game {
                 	            item.open(); 
                 	        } else {
                 	            Game.print("You don't have that item.");
+                	        }
+                	    }
+                	    break;
+                	   
+                	case "talk":
+                		if (words.length < 2) {
+                	        Game.print("Specify someone to talk to.");
+                	    } else {
+                	        String npcName = command.substring(command.indexOf(" ") + 1).toLowerCase();
+                	        NPC npc = currentRoom.getNPC(npcName); // Look in room
+                	        if (npc != null) {
+                	            npc.talk(); 
+                	        } else {
+                	            Game.print("You can't talk to puppy");
                 	        }
                 	    }
                 	    break;

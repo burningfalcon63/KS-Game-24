@@ -24,9 +24,11 @@ public class World {
 
     	Safe mirror = new Safe("Mirror", "a dark mirror with that shows no reflection");
     	Item combination = new Combination("Combination", "it seems like it could be useful");
+    	Puppy puppy = new Puppy();
         Room grandFountain = createRoom("Grand Fountain", "You are next to the Grand Fountain, it's the biggest you've seen.");
         grandFountain.addItem(mirror);
         grandFountain.addItem(combination);
+        grandFountain.addNPC(puppy);
         
         Item seed = new Item("Miracle Seed", "it has a strange warmth to it.");
         Room greenHouse = createRoom("Green House", "You are at the Greenhouse, plants from all over grow here.");

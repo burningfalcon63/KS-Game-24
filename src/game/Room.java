@@ -16,6 +16,7 @@ public class Room implements Serializable {
     private Room down;
     private Boolean locked = false;
     private String name;
+    private HashMap<String, NPC> npcs = new HashMap<String, NPC>();
     private HashMap<String, Item>items = new HashMap<String, Item>();
 
     public Room(String name) {
@@ -80,6 +81,20 @@ public class Room implements Serializable {
 	        }
 	    }
 	    return null; // Return null if no match is found
+	}
+	
+	public void addNPC(NPC npc) {
+		npcs.put(npc.getName(), npc);
+		
+	}
+	
+	public NPC getNPC(String name) {
+    	for (String key : npcs.keySet()) {
+            if (key.equalsIgnoreCase(name)) { // Case-insensitive match
+                return npcs.get(key);
+            }
+        }
+        return null; // Return null if no match is found
 	}
 
 
