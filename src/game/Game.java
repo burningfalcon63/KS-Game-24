@@ -22,6 +22,9 @@ public class Game {
     public static void main(String[] args) {
         currentRoom = World.buildWorld(); // If you don't already do this
         gui = new GUI(); // Use the name of your gui class
+        gui.print("This Game is unfortunately very simple"); 
+        gui.print("I simply ran out of ideas but feel free to look around");
+        gui.print("For instructions the Fairy Queen will tell you what to do\n");    
         gui.print(currentRoom);
     }
     
@@ -103,13 +106,6 @@ public class Game {
     }
     
     public static void processCommand(String command) {
-		// Get user input for direction (e.g., 'n' for north)
-		//print("\nEnter a direction (n)orth, (s)outh, (e)ast, (w)est, (u)p, or (d)own, or 'q' to quit: ");
-		//print("Say 'take' to grab an item, 'look' to examine an item, or 'inv' to check your inventory");
-		//print("Say 'use' to use an item, 'open' to open an item");
-		
-		//Game.print(currentRoom);
-		
 		if (command == null || command.isEmpty()) {
 			print("Please enter a valid command.");
 			return;
