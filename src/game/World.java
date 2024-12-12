@@ -22,15 +22,15 @@ public class World {
 	
 	public static Room buildWorld() {
 
-    	Safe mirror = new Safe("Mirror", "a dark mirror with that shows no reflection");
-    	Item combination = new Combination("Combination", "it seems like it could be useful");
     	Puppy puppy = new Puppy();
+    	Queen queen = new Queen();
+    	Fountain fountain = new Fountain("Grand Fountain", "The center of room");
         Room grandFountain = createRoom("Grand Fountain", "You are next to the Grand Fountain, it's the biggest you've seen.");
-        grandFountain.addItem(mirror);
-        grandFountain.addItem(combination);
         grandFountain.addNPC(puppy);
+        grandFountain.addNPC(queen);
+        grandFountain.addItem(fountain);
         
-        Item seed = new Item("Miracle Seed", "it has a strange warmth to it.");
+        Item seed = new Fountain("Miracle Seed", "it has a strange warmth to it.");
         Room greenHouse = createRoom("Green House", "You are at the Greenhouse, plants from all over grow here.");
         greenHouse.addItem(seed);
         
@@ -41,7 +41,7 @@ public class World {
         roseGarden.addItem(rose);
 
         Room wishingWell = createRoom("Wishing Well", "You are at the Wishing Well, maybe wishes can come true.");
-        Item coin = new Item("Gold Coin", "the fairy Queen is printed on it.");
+        Item coin = new Well("Gold Coin", "the fairy Queen is printed on it.");
         Item well = new Well("Wishing Well", "maybe you should throw a coin in");
         grandFountain.addItem(coin);
         wishingWell.addItem(well);
@@ -54,16 +54,18 @@ public class World {
         Room observatoryB = createRoom("Observatory Bathroom", "You are in the Observatory Bathroom, it smells like flowers.");
 
         Room repairRoomM = createRoom("Repair Room", "You are in the Repair Room, the fountain is maintained here."); 
+        Prince prince = new Prince();
         Room repairRoomC = createRoom("Repair Closet", "You are in the Repair Room Closet, there are many tools here."); 
         Room repairRoomB = createRoom("Repair Bathroom", "You are in the Repair Room Bathroom, it smells pretty bad here."); 
-        Item wrench = new Item("Magic Wrench", "it's warm to the touch, maybe it can fix something.");
+        Item wrench = new Pipe("Magic Wrench", "it's warm to the touch, maybe it can fix something.");
         Item pipe = new Item("Broken Pipe", "it looks like this pipe pumps something very important");
         repairRoomC.addItem(wrench);
         repairRoomM.addItem(pipe);
+        repairRoomM.addNPC(prince);
         
         Room ruinedGarden = createRoom("Ruined Garden", "You are in a Ruined Garden it looks like it was once very beautiful here");
         Item stone = new Key("Shiny Stone", "i feel like this fits somewhere", ruinedGarden);
-        Item glasses = new Crown("Rose Tinted Glasses", "The world looks  different now");
+        Item glasses = new Crown("Rose Tinted Glasses", "The world looks different now");
         ruinedGarden.setLocked(true);
         ruinedGarden.addItem(glasses);
         grandFountain.addItem(stone);

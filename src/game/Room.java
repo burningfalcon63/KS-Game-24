@@ -18,9 +18,11 @@ public class Room implements Serializable {
     private String name;
     private HashMap<String, NPC> npcs = new HashMap<String, NPC>();
     private HashMap<String, Item>items = new HashMap<String, Item>();
+    private HashMap<Character, Room> exits;
 
     public Room(String name) {
         this.name = name;
+        this.exits = new HashMap<>();
     }
 
     public Room getExit(char x) {
@@ -58,7 +60,7 @@ public class Room implements Serializable {
         
         else if(direction == 'd')
             down = room;
-        
+        exits.put(direction, room);
     }
     
     public Item getItem(String name) {
@@ -96,17 +98,27 @@ public class Room implements Serializable {
         }
         return null; // Return null if no match is found
 	}
-
+	
+	public void printExits() {
+        Game.print("Exits from " + name + ":");
+        for (HashMap.Entry<Character, Room> entry : exits.entrySet()) {
+            Game.print(entry.getKey() + " - " + entry.getValue().getName());
+        }
+    }
 
 	@Override
     public String toString() {
         StringBuilder roomDescription = new StringBuilder(getDesc() + "\nItems in this room:");
-        if (items.isEmpty()) {
+        if (items.isEmpty() && npcs.isEmpty()) {
             roomDescription.append(" None.");
         } else {
             for (String itemName : items.keySet()) {
                 roomDescription.append("\n- ").append(itemName);
             }
+            for(String npcName : npcs.keySet()) {
+            	roomDescription.append("\n* ").append(npcName);
+            }
+            printExits();
         }
         return roomDescription.toString();
     }

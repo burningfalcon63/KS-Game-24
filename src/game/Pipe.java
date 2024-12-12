@@ -9,8 +9,10 @@ public class Pipe extends Item{
 	@Override
 	public void use() {
 		Item wrench = Game.getFromInv("Magic Wrench");
+		Item pipe = Game.getFromInv("Broken Pipe");
 		if(wrench != null) {
 			Game.print("Using the Magic Wrench you fix the broken pipe!");
+			Game.removeItemInv(pipe);
 			Game.print("It sounds like the fountain's water is running now!");
 		}
 		else {
